@@ -21,7 +21,7 @@ namespace Loan_Projection
             this.DebtBalance = debtBalance;
         }
 
-        public void Add(IterationResult iteration)
+        public void Add(LoanIterationResult iteration)
         {
             if (iteration.Status == LoanStatus.Sold)
             {

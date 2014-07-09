@@ -32,27 +32,37 @@ namespace Loan_Projection
 
         public void DumpLog(string prefix)
         {
-            StreamWriter outfile = new StreamWriter(prefix + AccountNum + ".csv");
+            try
+            {
+                StreamWriter outfile = new StreamWriter(prefix + AccountNum + ".csv");
 
-            outfile.WriteLine("|Date|Incoming Payments|Outgoing Payments|Starting Cash Balance|Ending Cash Balance|Debt Taken/Paid Off|Debt Balance|");
-            outfile.WriteLine("|----|-----------------|-----------------|---------------------|-------------------|-------------------|------------|");
+                outfile.WriteLine("|Date|Incoming Payments|Outgoing Payments|Starting Cash Balance|Ending Cash Balance|Debt Taken/Paid Off|Debt Balance|");
+                outfile.WriteLine("|----|-----------------|-----------------|---------------------|-------------------|-------------------|------------|");
 
-            foreach(LogItem l in Log)
-                outfile.WriteLine(l.ToString());
+                foreach (LogItem l in Log)
+                    outfile.WriteLine(l.ToString());
+            }
+
+            catch (IOException e)
+            {
+                Console.WriteLine("File '" + prefix + AccountNum + ".csv' cannot be accessed");
+            }
         }
 
-        public void Iterate(DateTime currentDate)
+        public AccountIterationResult Iterate(DateTime currentDate)
         {
             LogItem accountLog = new LogItem(Cash, Debt);
             accountLog.Date = currentDate;
 
             foreach(Loan l in Loans)
             {
-                IterationResult currentResult = l.Iterate(currentDate);
+                LoanIterationResult currentResult = l.Iterate(currentDate);
                 accountLog.Add(currentResult);
             }
 
             Log.Add(accountLog);
+
+            return new AccountIterationResult(accountLog.EndingCash, accountLog.DebtBalance);
         }
     }
 }

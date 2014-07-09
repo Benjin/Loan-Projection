@@ -37,29 +37,29 @@ namespace Loan_Projection
             return output;
         }
 
-        public IterationResult Iterate(DateTime currentDate)
+        public LoanIterationResult Iterate(DateTime currentDate)
         {
             if (Status == LoanStatus.Delinquent)
             {
                 if(currentDate > delinquencyExpiration) // time to sell off the loan
                 {
                     Status = LoanStatus.Sold;
-                    return new IterationResult(LoanStatus.Sold, UnpaidBalance / 2);
+                    return new LoanIterationResult(LoanStatus.Sold, UnpaidBalance / 2);
                 }
                 else
-                    return new IterationResult(LoanStatus.Delinquent, PaymentAmount);
+                    return new LoanIterationResult(LoanStatus.Delinquent, PaymentAmount);
 
             }
 
             if (Status == LoanStatus.Sold)
-                return new IterationResult(LoanStatus.Sold, 0);
+                return new LoanIterationResult(LoanStatus.Sold, 0);
 
             // currently active
 
             // sell off loan
             if(rand.NextDouble() < 0.01)
             {
-                IterationResult output = new IterationResult(LoanStatus.Active, UnpaidBalance); // leave as Active in result b/c payment
+                LoanIterationResult output = new LoanIterationResult(LoanStatus.Active, UnpaidBalance); // leave as Active in result b/c payment
                 Status = LoanStatus.Sold;
                 UnpaidBalance = 0;
                 return output;
@@ -70,7 +70,7 @@ namespace Loan_Projection
             {
                 Status = LoanStatus.Delinquent;
                 delinquencyExpiration = currentDate.AddYears(2);
-                return new IterationResult(LoanStatus.Delinquent, PaymentAmount);
+                return new LoanIterationResult(LoanStatus.Delinquent, PaymentAmount);
             }
 
             // make payment
@@ -78,7 +78,7 @@ namespace Loan_Projection
             {
                 double thisPayment = UnpaidBalance > 0.8 * PaymentAmount ? 0.8 * PaymentAmount : UnpaidBalance;
                 UnpaidBalance -= thisPayment;
-                return new IterationResult(LoanStatus.Active, thisPayment);
+                return new LoanIterationResult(LoanStatus.Active, thisPayment);
             }
         }
     }

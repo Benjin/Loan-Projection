@@ -6,12 +6,12 @@ using System.Threading.Tasks;
 
 namespace Loan_Projection
 {
-    class IterationResult
+    class LoanIterationResult
     {
         public LoanStatus Status;
         public double Payment;
 
-        public IterationResult(LoanStatus status, double payment)
+        public LoanIterationResult(LoanStatus status, double payment)
         {
             this.Status = status;
             this.Payment = payment;
