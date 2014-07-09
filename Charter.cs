@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms.DataVisualization.Charting;
 using System.IO;
+using System.Drawing;
 
 namespace Loan_Projection
 {
@@ -17,22 +18,33 @@ namespace Loan_Projection
             ch.Width = 2000;
             ch.Height = 1000;
 
-            ch.ChartAreas.Add(new ChartArea());
+            ChartArea area = new ChartArea();
+
+            area.AxisX.Interval = 2;
+            area.AxisX.Title = "Month";
+            area.AxisX.LineColor = Color.LightGray;
+            area.AxisX.MajorGrid.LineColor = Color.LightGray;
+
+            area.AxisY.Interval = 5000000; // 5 million
+            area.AxisY.Title = "Amount (interval: $5M)";
+            area.AxisY.LineColor = Color.LightGray;
+            area.AxisY.MajorGrid.LineColor = Color.LightGray;
+
+            ch.ChartAreas.Add(area);
 
             Series cash = new Series();
+            cash.Color = Color.Green;
+            cash.ChartType = SeriesChartType.FastLine;
             cash.Points.DataBindXY(months, cashValues);
 
             Series debt = new Series();
+            debt.Color = Color.Red;
+            debt.ChartType = SeriesChartType.FastLine;
             debt.Points.DataBindXY(months, debtValues);
 
             ch.Series.Add(cash);
             ch.Series.Add(debt);
-
-            ch.ChartAreas[0].AxisX.Interval = 2;
-            ch.ChartAreas[0].AxisY.Interval = 5000000; // 5 million
-            ch.ChartAreas[0].AxisY.Title = "Amount (interval: $5M)";
-            ch.ChartAreas[0].AxisX.Title = "Month";
-
+            
             FileStream output = File.Open(filename, FileMode.Create);
             ch.SaveImage(output, ChartImageFormat.Png);
             output.Close();

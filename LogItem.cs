@@ -10,7 +10,7 @@ namespace Loan_Projection
     {
         public DateTime Date;
         public double IncomingPayment = 0, OutgoingPayment = 0;
-        public double StartingCash, EndingCash = 0;
+        public double StartingCash, EndingCash;
         public double DebtChange = 0, DebtBalance = 0;
 
         private static string dateFormatter = "yyyy-MM-dd";
@@ -18,6 +18,7 @@ namespace Loan_Projection
         public LogItem(double startingCash, double debtBalance)
         {
             this.StartingCash = startingCash;
+            this.EndingCash = StartingCash;
             this.DebtBalance = debtBalance;
         }
 
@@ -57,7 +58,7 @@ namespace Loan_Projection
             }
         }
 
-        public string ToString()
+        public override string ToString()
         {
             StringBuilder sb = new StringBuilder("|");
 
