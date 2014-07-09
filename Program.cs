@@ -17,7 +17,7 @@ namespace Loan_Projection
             Init();
 
             DateTime startDate = new DateTime(2014, 1, 1);
-            DateTime endDate = new DateTime(2014 + 5, 1, 1);
+            DateTime endDate = new DateTime(2014 + 15, 1, 1);
 
             Simulate(startDate, endDate);
             GenerateOutput();
@@ -61,7 +61,7 @@ namespace Loan_Projection
             Console.WriteLine("  Writing CSV files");
             foreach(Account a in accounts.Values)
             {
-                //a.DumpLog("account-");
+                a.DumpLog("account-");
             }
 
             Console.WriteLine("  Creating summary chart");

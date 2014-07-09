@@ -43,7 +43,7 @@ namespace Loan_Projection
                     outfile.WriteLine(l.ToString());
             }
 
-            catch (IOException e)
+            catch (IOException)
             {
                 Console.WriteLine("File '" + prefix + AccountNum + ".csv' cannot be accessed");
             }
@@ -61,6 +61,8 @@ namespace Loan_Projection
             }
 
             Log.Add(accountLog);
+            Cash = accountLog.EndingCash;
+            Debt = accountLog.DebtBalance;
 
             return new AccountIterationResult(accountLog.EndingCash, accountLog.DebtBalance);
         }

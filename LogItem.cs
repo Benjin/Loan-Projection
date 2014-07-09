@@ -11,7 +11,7 @@ namespace Loan_Projection
         public DateTime Date;
         public double IncomingPayment = 0, OutgoingPayment = 0;
         public double StartingCash, EndingCash;
-        public double DebtChange = 0, DebtBalance = 0;
+        public double DebtChange = 0, DebtBalance;
 
         private static string dateFormatter = "yyyy-MM-dd";
 
@@ -26,29 +26,25 @@ namespace Loan_Projection
         {
             if (iteration.Status == LoanStatus.Sold)
             {
-                if (iteration.Payment == 0)
+                if (iteration.Payment == 0) // totally complete
                     return;
 
-                if (iteration.Payment > DebtBalance)
-                {
-                    DebtChange -= DebtBalance;
-                    double amountRemaining = iteration.Payment - DebtBalance;
-                    DebtBalance = 0;
-                    OutgoingPayment += amountRemaining;
-                }
-                
-                else
-                {
-                    DebtBalance -= iteration.Payment;
-                    DebtChange -= iteration.Payment;
-                }
+                // unscheduled closure
+                DebtChange -= iteration.Payment < DebtBalance ? iteration.Payment : DebtBalance;
+                DebtBalance -= iteration.Payment;
 
+                if(DebtBalance < 0)
+                {
+                    OutgoingPayment += -DebtBalance;
+                    DebtBalance = 0;
+                }
             }
 
             else if (iteration.Status == LoanStatus.Delinquent)
             {
                 OutgoingPayment += iteration.Payment;
                 DebtChange += iteration.Payment;
+                DebtBalance += iteration.Payment;
             }
 
             else // LoanStatus == Active

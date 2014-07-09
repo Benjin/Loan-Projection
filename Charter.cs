@@ -25,8 +25,8 @@ namespace Loan_Projection
             area.AxisX.LineColor = Color.LightGray;
             area.AxisX.MajorGrid.LineColor = Color.LightGray;
 
-            area.AxisY.Interval = 5000000; // 5 million
-            area.AxisY.Title = "Amount (interval: $5M)";
+            area.AxisY.Interval = 2000000000; // 2 billion
+            area.AxisY.Title = "Amount (interval: $2B)";
             area.AxisY.LineColor = Color.LightGray;
             area.AxisY.MajorGrid.LineColor = Color.LightGray;
 
