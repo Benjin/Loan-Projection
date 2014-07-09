@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.IO;
 
 namespace Loan_Projection
 {
@@ -31,7 +32,13 @@ namespace Loan_Projection
 
         public void DumpLog(string prefix)
         {
+            StreamWriter outfile = new StreamWriter(prefix + AccountNum + ".csv");
 
+            outfile.WriteLine("|Date|Incoming Payments|Outgoing Payments|Starting Cash Balance|Ending Cash Balance|Debt Taken/Paid Off|Debt Balance|");
+            outfile.WriteLine("|----|-----------------|-----------------|---------------------|-------------------|-------------------|------------|");
+
+            foreach(LogItem l in Log)
+                outfile.WriteLine(l.ToString());
         }
 
         public void Iterate(DateTime currentDate)

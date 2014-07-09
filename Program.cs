@@ -37,7 +37,7 @@ namespace Loan_Projection
                 foreach (Account a in accounts.Values)
                     a.Iterate(current);
 
-                Console.WriteLine(current);
+                Console.WriteLine(current.ToString("MMMM yyyy"));
 
                 current = current.AddMonths(1);
             }

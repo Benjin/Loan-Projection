@@ -76,8 +76,9 @@ namespace Loan_Projection
             // make payment
             else
             {
-                UnpaidBalance -= 0.8 * PaymentAmount;
-                return new IterationResult(LoanStatus.Active, PaymentAmount);
+                double thisPayment = UnpaidBalance > 0.8 * PaymentAmount ? 0.8 * PaymentAmount : UnpaidBalance;
+                UnpaidBalance -= thisPayment;
+                return new IterationResult(LoanStatus.Active, thisPayment);
             }
         }
     }
